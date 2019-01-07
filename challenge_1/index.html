@@ -2,12 +2,45 @@
  <html lang="en">
    <head>
      <title>TicTacToe</title>
-     <script src="app.js"></script>
    </head>
    <body>
-    <h1>Ultimate Tic-Tac-Toe</h1>
-    <div></div>
-   
+    <h1 style="text-align: left">Ultimate Tic-Tac-Toe</h1>
+    <div class="main-container"> 
+
+      <table id="game-board" style="display: flex; border-collapse: collapse; border-spacing: 0">
+        <tr class="top-row">
+          <td class="game-box" data-row="0" data-index="0" onclick="handleSpaceOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+          <td class="game-box" data-row="0" data-index="1" onclick="handleSpaceOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+          <td class="game-box" data-row="0" data-index="2" onclick="handleSpaceOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+        </tr>
+        <tr class="middle-row">
+          <td class="game-box" data-row="1" data-index="0" onclick="handleSpaceOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+          <td class="game-box" data-row="1" data-index="1" onclick="handleSpaceOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+          <td class="game-box" data-row="1" data-index="2" onclick="handleSpaceOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+        </tr>
+        <tr class="lower-row">
+          <td class="game-box" data-row="2" data-index="0" onclick="handleSpaceOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+          <td class="game-box" data-row="2" data-index="1" onclick="handleSpaceOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+          <td class="game-box" data-row="2" data-index="2" onclick="handleSpaceOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+        </tr>
+      </table>
+  
+      <button class="new-game" onClick="handleGameRestart(this)" >Reset</button>
+      <!-- <input type="text" class="player-one" placeholder="player One: name">  -->
+      
+      <!-- <div class="tally-board">
+        <span>Player 1: 
+         <span>Wins: </span>
+        </span>
+        <span>Player 2:
+          <span>Wins: </span>
+        </span>
+      </div>  -->
+    
+    </div>
+
+
+      <script src="app.js"></script>
   </body>
  </html>
 
