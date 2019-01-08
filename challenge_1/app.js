@@ -10,12 +10,6 @@ var playCount = 1;
 //   }
 // }, false);
 
-var currentBoardState = [
-  [null, null, null],
-  [null, null, null],
-  [null, null, null] ];
-
-
 
 
 // let boxes = document.querySelectorAll('td');
@@ -24,25 +18,24 @@ var currentBoardState = [
 let board = document.getElementById('game-board');
 let boxes = document.getElementsByClassName('game-box');
 
+var toggleElemClassOnClick = function(el) {
+  if(el.className === "game-box") {
+    el.className = "disabled"
+  }
+}
 
 var handleSpaceOnClick = function(el) {
   if(el.classList.contains('game-box')) {
     //check if the playCount is odd or even
     if(playCount % 2 === 0) {
-      //update board on browser
       el.innerHTML = player2;
-      //update currentBoardState by passing el data attribute value for row and index
-      updateCurrentBoard(el.dataset.row, el.dataset.index, player2);
     } else {
       el.innerHTML = player1;
-      updateCurrentBoard(el.dataset.row, el.dataset.index, player1);
     }
     playCount += 1;
+    toggleElemClassOnClick(el)
+    console.log(el.className)
   }
-}
-
-var updateCurrentBoard = function(row, col, player) {
-  currentBoardState[row][col] = player;
 }
 
 
@@ -54,7 +47,15 @@ var updateCurrentBoard = function(row, col, player) {
 
 // }
 
-
+/*
+resetting the game
+*/
+var toggleElemClassOnRestart = function(el) {
+  // if(el.className === "game-box" || el.className === "disabled") {
+  //   el.className = "game-box"
+  // }
+  el.className = "game-box";
+}
 
 var handleGameRestart = function(el) {
   if(el.classList.contains('new-game')) {
@@ -63,19 +64,15 @@ var handleGameRestart = function(el) {
   }
 }
 
-/*
-resetting the game
-*/
-
-
 var startNewGameBoard = function() {
   //empty all the boxes and refresh the playCount to 1
-  Array.from(boxes).forEach(box => {
-    box.innerHTML = null;
+  var elems = board.getElementsByTagName('td');
+  Array.from(elems).forEach(elem => {
+    elem.innerHTML = null;
     playCount = 1;
+    toggleElemClassOnRestart(elem);
   });
 }
-
 
 /*
 Below are functions for checking if there is a winner
@@ -96,6 +93,39 @@ checkForWinnerDiagonals = function() {
 checkForScratchGame = function() {
 
 }
+
+// var Board = function(topRow, midRow, bottomRow, colIndex0, colIndex1, colIndex2, diagTopLeft, diagTopRight) {
+//   this.gameId = 
+//   this.topRow = topRow; 
+//   this.midRow = midRow;
+//   this.bottomRow = bottomRow;
+//   this.colIndex0 = colIndex0;
+//   this.colIndex1 = colIndex1;  
+//   this.colIndex2 = colIndex2;
+//   this.diagTopLeft = diagTopLeft;
+//   this.diagTopRight = diagTopRight;
+// } 
+
+
+// document.addEventListener('DOMContentLoaded', function(event) {
+//   handleGameRestart();
+// })
+
+// var updateCurrentBoard = function(row, col, player) {
+//   currentBoardState[row][col] = player;
+//   console.log(row);
+//   console.log(col);
+//   console.log(player);
+// }
+
+
+
+
+
+
+
+
+
 
 
 
