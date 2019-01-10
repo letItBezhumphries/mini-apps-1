@@ -2,50 +2,24 @@ var player1 = "X";
 var player2 = "O";
 var playCount = 1;
 
-var scoreBoard = {
-  player1: {
-    name: null,
-    wins: 0,
-    losses: 0
-  },
-  player2: {
-    name: null,
-    wins: 0,
-    losses: 0
-  }
-}
 
 
-// document.addEventListener('DOMContentLoaded', function(event) {
-  
-//   init();
-//   handleGameRestart();  
-// })
+const createState = function() {
+  return {
+    topRow: [],
+    midRow: [],
+    botRow: [], 
+    colIndex0: [],
+    colIndex1: [],
+    colIndex2: [],
+    diagLeft: [],
+    diagRight: [],
+    board: []
+  }  
+};
 
-// var GameBoard = function() {
-//   // this.gameId = gameId,
-//   this.player1 = "X",
-//   this.player2 = "O",
-//   this.playCount = 1,
-//   this.board = [null, null, null, null, null, null, null, null, null];
-// }
 
-// const currentBoard = [null, null, null, null, null, null, null, null, null];
-const currentBoard = [];
 
-// var init = function() {
-//   new GameBoard()
-// }
-
-//event listener that listens for a click event on a table data cell
-// document.addEventListener('click', function(event) {
-//   var clickedElem = event.target;
-//   if(clickedElem.classList.contains("game-box")) {
-//     handleSpaceOnTurn(clickedElem);
-//   }
-// }, false);
-
-//grab all the table data cells
 const board = document.getElementById('game-board');
 let boxes = document.getElementsByClassName('game-box');
 
@@ -55,40 +29,60 @@ var toggleElemClassOnClick = function(el) {
   }
 }
 
+// function handles a players turn when user click on a square
+
 var handleTurnOnClick = function(el) {
+  //create a new board to pass down to updateBoard function and the boardWinChecker function
+  var newState = createState();
+  
+  //checks if the el classList has our className
   if(el.classList.contains('game-box')) {
-    // var idx = el.dataset.index;
-    //console.log(idx);
-    //check if the playCount is odd or even
+    //check if the playCount is odd or even to determine the turn
     if(playCount % 2 === 0) {
       el.innerHTML = player2;
     } else {
       el.innerHTML = player1;
     }
-    playCount += 1;
-    toggleElemClassOnClick(el);
-    checkForWin(el);
+    playCount += 1; //increment the playCount
+    toggleElemClassOnClick(el);  //disable a square from being clicked again
+    updateState(newState); 
   }
+}
+
+var updateState = function(stateBoard) {
+  var elems = board.getElementsByTagName('td');
+  //iterate over the cells
+  Array.from(elems).forEach(elem => {
+    if(elem.className === "disabled") {
+      var index = elem.dataset.index;
+      var value = elem.innerHTML;
+      getDiagonalsLeft(elem, stateBoard);
+      getDiagonalsRight(elem, stateBoard);
+      getTopRow(elem, stateBoard);
+      getMidRow(elem, stateBoard);
+      getBotRow(elem, stateBoard);
+      getColIndex0(elem, stateBoard);
+      getColIndex1(elem, stateBoard);
+      getColIndex2(elem, stateBoard);
+    }
+  });
 }
 
 /*
 resetting the game
 */
 var toggleElemClassOnRestart = function(el) {
-  // if(el.className === "game-box" || el.className === "disabled") {
-  //   el.className = "game-box"
-  // }
   el.className = "game-box";
 }
 
 var handleGameRestart = function(el) {
   if(el.classList.contains('new-game')) {
-    //invoke the createNewGame
-    startNewGameBoard()
+    //invoke the refreshBoard function to reset the page
+    boardRefresh();
   }
 }
 
-var startNewGameBoard = function() {
+var boardRefresh = function() {
   //empty all the boxes and refresh the playCount to 1
   var elems = board.getElementsByTagName('td');
   Array.from(elems).forEach(elem => {
@@ -98,132 +92,118 @@ var startNewGameBoard = function() {
   });
 }
 
-/*
+/* Update state helpers that check for wins *********
 Below are functions for checking if there is a winner
 by populating the currentBoard every time a box is clicked
 */
-var checkForWin = function(element) {
-  var idx;
-  //grab the data cells 
-  var elems = board.getElementsByTagName('td');
-  //iterate over the cells
-  Array.from(elems).forEach(elem => {
-    //populate the currentBoard use the data attribute index 
-    //assign the matching currentBoard[idx] to that elem.innerHTML
-    idx = elem.dataset.index    
-    currentBoard[idx] = elem.innerHTML;
-  }); 
-  checkRows(currentBoard);
-  checkColums(currentBoard);
-  checkDiagonals(currentBoard);
-  checkForDraw(currentBoard);
-}
 
-
-var checkRows = function(board) {
-  //grab all the elements with dataset-row = 1
-  if((board.slice(0, 3).join('') === "XXX") || (board.slice(3, 6).join('') === "XXX") || (board.slice(6).join('') === "XXX")) {
-    window.alert("Player 1 won!");
-    startNewGameBoard();
-    return true;
-    //player1.wins = player1.wins + 1
-  } else if((board.slice(0, 3).join('') === "OOO") || (board.slice(3, 6).join('') === "OOO") || (board.slice(6).join('') === "OOO")) {
-    window.alert("Player 2 won!");
-    //player2.wins = player2.wins + 1;
-    startNewGameBoard();
-    return true;
-  } else {
-    return false;
-  }
-}
-
-var checkColums = function(board) {
-  var column1 = board[0] += board[3] += board[6];
-  var column2 = board[1] += board[4] += board[7];
-  var column3 = board[2] += board[5] += board[8];
-  if((column1 === "XXX") || (column2 === "XXX") || (column3 === "XXX")) {
-    window.alert("Player 1 won!");
-    startNewGameBoard();
-    return true;
-  } else if((column1 === "OOO") || (column2 === "OOO") || (column3 === "OOO")) {
-    window.alert("Player 2 won!");
-    startNewGameBoard();
-    return true;
-  } else {
-    return false;
-  }
-}                       
-
-var checkDiagonals = function(board) {
-  var diagTopLeft = board[0] += board[4] += board[8];
-  console.log("√√√√√√", diagTopLeft);
-  var diagTopRight = board[2] += board[4] += board[6];
-  console.log("√√√√√√", diagTopRight);
-  if((diagTopLeft === "XXX") || (diagTopRight === "XXX")) {
-    window.alert("Player 1 won!");
-    startNewGameBoard();
-    return true;
-  } else if((diagTopLeft === "OOO") || (diagTopRight === "OOO")) {
-    window.alert("Player 2 won!");
-    startNewGameBoard();
-    return true;
-  } else {
-    return false;
-  }
-}
-
-var checkForDraw = function(board) {
-  //check if board contains an empty string
-  if(playCount === 9) {
-    if((checkRows === false) && (checkColums === false) && (checkDiagonals === false)) {
-      window.alert('Shucks looks like a draw! Play again?');
-      startNewGameBoard();
+var checkForWin = function(array) {
+  if(array.length === 3) {
+    if(array.every(isPlayer1Value)) {
+      window.alert("Player 1 won!");
+      boardRefresh();
+      return true;
+    } else if(array.every(isPlayer2Value)) {
+      window.alert("Player 2 won!");
+      boardRefresh();
+      return true;
+    } else {
+      return false;
     }
-  } 
+  }
 }
 
-// var Board = function(topRow, midRow, bottomRow, colIndex0, colIndex1, colIndex2, diagTopLeft, diagTopRight) {
-//   this.gameId = 
-//   this.topRow = topRow; 
-//   this.midRow = midRow;
-//   this.bottomRow = bottomRow;
-//   this.colIndex0 = colIndex0;
-//   this.colIndex1 = colIndex1;  
-//   this.colIndex2 = colIndex2;
-//   this.diagTopLeft = diagTopLeft;
-//   this.diagTopRight = diagTopRight;
-// } 
+var isPlayer1Value = function(val) {
+  return val === "X"
+}
 
+var isPlayer2Value = function(val) {
+  return val === "O";
+}
 
+var getTopRow = function(el, stateBoard) {
+  //create an array or string
+  // var diagonalLeft = [];
+  if(el.dataset.row === "0") {
+    stateBoard.topRow.push(el.innerHTML);
+  }
+  console.log(stateBoard.topRow);
+  checkForWin(stateBoard.topRow);
+}
 
+var getMidRow = function(el, stateBoard) {
+  //create an array or string
+  // var diagonalLeft = [];
+  if(el.dataset.row === "1") {
+    stateBoard.midRow.push(el.innerHTML);
+  }
+  console.log(stateBoard.midRow);
+  checkForWin(stateBoard.midRow)
+}
 
-// var updateCurrentBoard = function(row, col, player) {
-//   currentBoardState[row][col] = player;
-//   console.log(row);
-//   console.log(col);
-//   console.log(player);
+var getBotRow = function(el, stateBoard) {
+  if(el.dataset.row === "2") {
+    stateBoard.botRow.push(el.innerHTML);
+  }
+  console.log(stateBoard.botRow);
+  checkForWin(stateBoard.botRow)
+}
+
+var getColIndex0 = function(el, stateBoard) {
+  if(el.dataset.column === "0") {
+    stateBoard.colIndex0.push(el.innerHTML);
+  }
+  console.log(stateBoard.colIndex0);
+  checkForWin(stateBoard.colIndex0)
+}
+
+var getColIndex1 = function(el, stateBoard) {
+  if(el.dataset.column === "1") {
+    stateBoard.colIndex1.push(el.innerHTML);
+  }
+  console.log(stateBoard.colIndex1);
+  checkForWin(stateBoard.colIndex1)
+}
+
+var getColIndex2 = function(el, stateBoard) {
+  if(el.dataset.column === "2") {
+    stateBoard.colIndex2.push(el.innerHTML);
+  }
+  console.log(stateBoard.colIndex2);
+  checkForWin(stateBoard.colIndex2)
+}
+
+var getDiagonalsLeft = function(el, stateBoard) {
+  if(el.dataset.diag === "both") {
+    stateBoard.diagLeft.push(el.innerHTML);
+  }
+  if(el.dataset.diag === "left") {
+    stateBoard.diagLeft.push(el.innerHTML);
+  } 
+  checkForWin(stateBoard.diagLeft);
+}
+
+var getDiagonalsRight = function(el, stateBoard) {
+  if (el.dataset.diag === "both") {
+    stateBoard.diagRight.push(el.innerHTML);
+  } 
+  if (el.dataset.diag === "right") {
+    stateBoard.diagRight.push(el.innerHTML);
+  }
+  checkForWin(stateBoard.diagRight);
+}
+
+// var checkForDraw = function(board) {
+//   //iterate over the boardState and check if a null value exist in board
+//   for(var i = 0; i < board.length; i++) {
+//     if(board[i] === null) {
+//       return;
+//     } else if((checkRows(board) === false) && (checkColums(board) === false) && (checkDiagonals(board) === false)) {
+//       window.alert('Shucks looks like a draw! Play again?');
+//       //push that board onto the boardHistory
+//       //increment the tally results
+//       boardRefresh();
+//     } 
+//   } 
 // }
-
-/*
-// saving the game in place
-// */
-
-// var saveGameInPlace = function() {
-
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

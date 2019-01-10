@@ -10,19 +10,19 @@
 
       <table id="game-board" style="display: flex; border-collapse: collapse; border-spacing: 0">
         <tr class="top-row">
-          <td class="game-box" data-row="0" data-index="0" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
-          <td class="game-box" data-row="0" data-index="1" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
-          <td class="game-box" data-row="0" data-index="2" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+          <td class="game-box" data-row="0" data-index="0" data-column="0" data-diag="left" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+          <td class="game-box" data-row="0" data-index="1" data-column="1" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+          <td class="game-box" data-row="0" data-index="2" data-column="2" data-diag="right" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
         </tr>
         <tr class="middle-row">
-          <td class="game-box" data-row="1" data-index="3" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
-          <td class="game-box" data-row="1" data-index="4" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
-          <td class="game-box" data-row="1" data-index="5" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+          <td class="game-box" data-row="1" data-index="3" data-column="0" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+          <td class="game-box" data-row="1" data-index="4" data-column="1" data-diag="both" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+          <td class="game-box" data-row="1" data-index="5" data-column="2" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
         </tr>
         <tr class="lower-row">
-          <td class="game-box" data-row="2" data-index="6" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
-          <td class="game-box" data-row="2" data-index="7" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
-          <td class="game-box" data-row="2" data-index="8" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+          <td class="game-box" data-row="2" data-index="6" data-column="0" data-diag="right" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+          <td class="game-box" data-row="2" data-index="7" data-column="1" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
+          <td class="game-box" data-row="2" data-index="8" data-column="2" data-diag="left" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
         </tr>
       </table>
   
