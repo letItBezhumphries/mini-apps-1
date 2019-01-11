@@ -1,0 +1,22 @@
+{
+  "name": "csv-report-generator",
+  "version": "1.0.0",
+  "description": "client-server app that generates CSV reports from JSON data",
+  "main": "server.js",
+  "private": true,
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "Eric Humphries",
+  "license": "UNLISCENSED",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "jquery": "^3.3.1",
+    "nodemon": "^1.18.9"
+  }
+}
