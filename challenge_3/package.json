@@ -1,0 +1,16 @@
+{
+  "name": "challenge_3",
+  "version": "1.0.0",
+  "description": "Multistep Checkout Experience",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "letItBezhumphries"
+  },
+  "author": "Eric Humphries",
+  "license": "ISC"
+}
