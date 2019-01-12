@@ -4,13 +4,29 @@
   "description": "Multistep Checkout Experience",
   "main": "server.js",
   "scripts": {
+    "postinstall": "curl -s https://raw.githubusercontent.com/reactorcore/pomander/master/bin/install | bash",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js --watch",
+    "babel": "babel client --out-dir public --@babel/presets=@babel/env,react --source-maps inline --watch"
   },
   "repository": {
     "type": "git",
     "url": "letItBezhumphries"
   },
   "author": "Eric Humphries",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "nodemon": "^1.18.9",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.0",
+    "@babel/core": "^7.1.0",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-es2015": "^7.0.0-beta.53",
+    "@babel/preset-react": "^7.0.0"
+  }
 }
