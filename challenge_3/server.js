@@ -25,6 +25,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.set({"content-Type": "application/json"});
 
+app.use(session({
+  secret: 'coffee_now_andAlways',
+  resave: false,
+  saveUninitialized: true
+}));
+
 /************* routes **********************************/
 
 app.listen(PORT, ()=> console.log(`app is listening on port ${PORT}`));
