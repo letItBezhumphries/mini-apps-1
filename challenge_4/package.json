@@ -1,0 +1,21 @@
+{
+  "name": "challenge_4",
+  "version": "1.0.0",
+  "description": "ingle-page app implementation of the game Connect Four",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/letItBezhumphries"
+  },
+  "author": "Eric Humphries",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
+  }
+}
