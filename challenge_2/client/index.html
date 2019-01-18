@@ -1,16 +1,23 @@
 <!DOCTYPE html>
   <html lang="en">
     <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>CSV Report Generator</title>
-      <!-- <script src="../node_modules/jquery/dist/jquery.js"></script> -->
     </head>
     <body>
-      <form id="json-csv" method="POST" action="/">
+      <h1>CSV Report Generator</h1>
+    </br>
+      <form id="json-csv" method="POST" action="/upload">
         <input type="file">
         <textarea name="csv" class="report-field" type="submit" cols="25" rows="50"></textarea>
         <button class="form-submit">Submit</button>
       </form> 
-      
+
+      <div id="csv-report">  
+      </div>
+
+       <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
        <script src="app.js"></script>
     </body>
   </html>

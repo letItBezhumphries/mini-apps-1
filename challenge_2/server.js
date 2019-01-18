@@ -1,89 +1,183 @@
-
 const express = require('express');
 const parser = require('body-parser');
-const PORT = process.env.PORT || 3000;
+const multer = require('multer');
+
+const upload = multer();
+const path = require('path');
+const fs = require('fs');
+
+const PORT = 3000;
 const app = express();
 
-app.use(express.static(__dirname + '/client'));
-app.use(parser.json());
+app.use(express.static('/client'));
 app.use(parser.urlencoded({extended:true}))
+app.use(parser.json());
+
 
 app.get('/', function(req, res) {
   console.log('in the get')
-
 });
 
-app.set("Allowed: application/json");
+app.set({"content-type": "application/json"})
 
-app.post('/', function(req, res) {
-  console.log("in the post", req.body);
+app.get('/upload', function(req, res) {
+  ///from filePicker input?
+})
+
+var fileNameId = 1;
+
+app.post('/upload', function(req, res, ) {  
+  var formData = JSON.parse(req.body.csv);
+  var nestArray = gatherTableTextElements(flattenJSONObject(formData));
+  var reportText = generateCSVReportToWriteFile(nestArray, []);
   
-  res.send();
+  var tableHeaders = createHTMLTableHeaderRow(nestArray.shift());
+  var tableTemplate = createHTMLTableData(nestArray, tableHeaders);
+  
+  fileNameId += 1;
+  //increment fileNameId and attach it to end of fileNamePath 
+  //writing files to csvReports folder
+  var fileNamePath = '/reports/' + fileNameId.toString() + '.csv'; 
+  fs.writeFile('/client' + fileNamePath, reportText, 'utf8', function(err) {
+    if(err) {
+      console.log('error occurred trying to write file', err);
+    } else {
+      res.send(renderReportView(reportText, tableTemplate));
+    }
+  });
+
 })
 
 
 app.listen(PORT, ()=> console.log(`app is listening on port ${PORT}`));
 
-//report generation logic// 
-
-var handleIncomingObjects = function() {
-
+/*
+Flatten the JSON data -- it takes the json object and returns an array of object and children as elements
+ */
+function flattenJSONObject(obj) {
+  var results = [];
+  results.push(obj);
+  if(obj.children.length > 0) {
+    obj.children.forEach(function(node) {
+      results = results.concat(flattenJSONObject(node));
+    }); 
+  }
+  return results; 
 }
 
-var getAllTableColumnKeys = function(obj) {
-  //grab the keys   
-}
-
-var getAllTableColumnValues = function(obj) {
-  //grab all the values
-}
-
-var createTableModel = function(keys, values) {
-
-}
-
-
-var handleChildrenObjects = function(obj, children) {
-
-}
-
-
-
-/*The server must flatten the JSON hierarchy, all the keys are the first line
-  //grab the keys from the first object   and add it to a injection string followed by a comma
-  "firstName," 
-  //grab the values with Object.values()
-  //handle case for a value that is an array /children
-
-  //iterate over the children
-
-grab an object  
-mapping each item/object in the JSON to a single line of CSV report
-
-
-function to handle the Object keys   
-  the keys of the JSON objects will be the columns of the CSV report.
-  keep hiearchy in mind 
+function gatherTableTextElements(array) {
+  var queue = [];
+  //grab the table headers from the first element in the array
+  queue.push(Object.keys(array[0]).slice(0,6));
+  //iterate over each object in the array and push the values from each object
   
-In other words, all sibling records at a particular level of the hierarchy 
-will have the same set of properties, 
+  for(var i = 0; i < array.length; i++) {
+    queue.push(Object.values(array[i]).slice(0,6));
+  }
+  return queue;
+}
 
+var createNewLine = function(array, str) {
+  str += array.join(',');
+  return str;
+}
 
-but child objects might not contain the same properties. 
-In all cases, every property you encounter must be present in the final CSV output.
+function generateCSVReportToWriteFile(nestedArray, output) {
+  var line;
+  for(var i = 0; i < nestedArray.length; i++) {
+    line = createNewLine(nestedArray[i], "");
+    output.push(line);
+  }
+  return output.join("/n");
+}
 
+/**
+ * 
+ * 
+ */
 
-You may also assume that child records in the JSON will always be in a property called `children`.
-*/
 
 /*
 The response from the server should contain the CSV report along with the form so the user 
 can keep submitting indefinitely, without having to go back to the "form page"
 */
 
+//report generation logic// 
+function generatePage(csvReport) {
+  console.log(csvReport);
+  return ` <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <title>CSV Report Generator</title>
+      
+    </head>
+    <body>
+      <form id="json-csv" method="POST" action="/upload">
+        <input type="file">
+        <textarea name="csv" class="report-field" type="submit" cols="25" rows="50"></textarea>
+        <button class="form-submit">Submit</button>
+      </form>
+      <br/> 
+      <div> 
+        ${csvReport}
+      </div>
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+      <script src="app.js"></script>
+    </body>
+  </html>
+`
+}
+
+//iterate over each element in the nestedArray
+//each element represents a new line of text to concatenate to string to write to file 
+//each element also represent a new row of html elements that can be added to template string?
+
+var renderReportView = function(fileString, htmlString) {
+
+}
+
+
+function createHTMLTableHeaderRow(array) {
+  var row = `<tr>`; 
+  array.map(function(item, index) {
+    row += `<th scope="col">${item}</th>`
+  });
+  return row + `</tr>`;
+}
+
+function createHTMLTableData(nestedArray, headerStr) {
+  var openingTableHTMLString = `<table>`;
+  for(var i = 0; i < nestedArray.length; i++) {
+    headerStr += createHTMLDataCellRow(nestedArray[i], `<tr>`);
+  }
+  return openingTableHTMLString + headerStr + `</table>`;
+}
+
+function createHTMLDataCellRow(array, rowStr) {
+  array.map(function(item, index) {
+    rowStr += `<td>${item}</td>`
+  });
+  return rowStr + `</tr>`
+}
+
+/*
+*********************** model ************************** 
+managing of state
+*/
+
+
+/*
+************************ views ************************** 
+what the user sees 
+how state is displayed 
+*/
+
+
+
 
 /* 
-Template function
+*********************** controller **********************
+user interface --forms, buttons, event listener
 */
 
 

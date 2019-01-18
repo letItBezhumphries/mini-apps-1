@@ -1,34 +1,78 @@
-var express = require('express');
+const express = require('express');
+const path = require('path');
+var session = require('express-session')
+
+
 var bodyParser = require('body-parser');
-var PORT = process.env.PORT || 3001;
+var PORT = 3001;
 
 var app = express();
 
-app.use(express.static(__dirname, '/public'));
+/************* database **********************************/
 
+var createUserAccout = require('./models/index');
+var updateUser = require('./models/index');
 
+/************* middleware **********************************/
+
+app.use('/', function(req, res, next) {
+  console.log("hi from middleware");
+  next();
+})
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+app.set({"content-Type": "application/json"});
+
+/************* routes **********************************/
 
 app.listen(PORT, ()=> console.log(`app is listening on port ${PORT}`));
 
 
 
+app.post('/users', function(req, res) {
 
-/*
-*********************** model ************************** 
-managing of state
-*/
-
-
-/*
-************************ views ************************** 
-what the user sees 
-how state is displayed 
-*/
+  let user = JSON.parse(Object.keys(req.body)[0]);
 
 
 
 
-/* 
-*********************** controller **********************
-user interface --forms, buttons, event listener
-*/
+})
+
+
+
+// app.get('/', function(req, res) {
+//   console.log('checkout has been hit!')
+// })
+
+// app.post('/login')
+
+// app.get('/signup', function(req, res) {
+//   console.log('login');
+// });
+
+// app.get('/shipping', function(req, res) {
+//   console.log('shipping info');
+// });
+
+
+// app.get('/billing', function(req, res) {
+//   console.log('billing');
+// });
+
+// app.get('/confirmation', function(req, res) {
+//   console.log('confirmation')
+// })
+
+
+
+
+
+
+
+
+
+
+
+

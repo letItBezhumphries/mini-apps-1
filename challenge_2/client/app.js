@@ -1,22 +1,8 @@
 
-// var App = {
-//   "username": username,
-//   previousGeneratedReports: {},
-//   mostRecentReport: {}, 
-//   init: function() {
-//     //create a View for the CSVReportView recieved from server
-//     //instantiate that model/view
 
-//     //create the form submission view that submits to the server
-//     //instantiate form view
-
-//     //
-//   },
-
-
-// }
-
-
+$('document').ready(function() {
+  $('.form-submit').click() //do something with ?? 
+})
 
 /*
 
