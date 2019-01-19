@@ -1,17 +1,16 @@
 const express = require('express');
 const path = require('path');
-var session = require('express-session')
-
-
+const bcrypt = require('bcrypt-nodejs');
 var bodyParser = require('body-parser');
 var PORT = 3001;
-
 var app = express();
+var multer = require('multer');
+var upload = multer();
 
 /************* database **********************************/
+var connection = require('./db/index').connection;
 
-var createUserAccout = require('./models/index');
-var updateUser = require('./models/index');
+
 
 /************* middleware **********************************/
 
@@ -21,64 +20,32 @@ app.use('/', function(req, res, next) {
 })
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-app.set({"content-Type": "application/json"});
 
-app.use(session({
-  secret: 'coffee_now_andAlways',
-  resave: false,
-  saveUninitialized: true
-}));
 
 /************* routes **********************************/
 
 app.listen(PORT, ()=> console.log(`app is listening on port ${PORT}`));
 
+app.post('/', upload.none(), function(req, res) {
+  var user = [];
+  var userData = req.body
+  bcrypt.hash(userData.password, 0, function(err, hash) {
+    if (err) throw err;
+    user.password = hash;
+    console.log(user.password)
+  });
 
-
-app.post('/users', function(req, res) {
-
-  let user = JSON.parse(Object.keys(req.body)[0]);
-
-
-
-
-})
-
-
-
-// app.get('/', function(req, res) {
-//   console.log('checkout has been hit!')
-// })
-
-// app.post('/login')
-
-// app.get('/signup', function(req, res) {
-//   console.log('login');
-// });
-
-// app.get('/shipping', function(req, res) {
-//   console.log('shipping info');
-// });
-
-
-// app.get('/billing', function(req, res) {
-//   console.log('billing');
-// });
-
-// app.get('/confirmation', function(req, res) {
-//   console.log('confirmation')
-// })
-
-
-
-
-
-
-
-
-
-
-
-
+  var queryString = `insert into user(name, email, password, address, suite, city, state, zip, phone, card, expiry, cvv, billing_zip) 
+                values(${obj.name}, ${obj.email}, ${user.password}, ${obj.address}, ${obj.suite}, ${obj.city}, ${obj.state}, ${obj.zip}, 
+                ${obj.phone}, ${obj.card}, ${obj.expiry}, ${obj.cvv}, ${obj.billing_zip})`;
+  
+  connection.query(queryString, function(error, results) {
+    if(error){
+      console.log("there was an error in mysql string", error);
+    } else {
+      console.log("success you created a user", results)
+    }
+  });
+  res.end()
+});
