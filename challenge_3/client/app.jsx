@@ -107,7 +107,7 @@ function ConfirmationPage(props) {
     </div>
   )
 }
-
+ 
 class App extends React.Component {
   constructor(props) {
     super(props);

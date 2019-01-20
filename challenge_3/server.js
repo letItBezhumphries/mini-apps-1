@@ -8,7 +8,7 @@ var multer = require('multer');
 var upload = multer();
 
 /************* database **********************************/
-var connection = require('./db/index').connection;
+var User = require('./db/index')
 
 
 
@@ -30,22 +30,22 @@ app.listen(PORT, ()=> console.log(`app is listening on port ${PORT}`));
 app.post('/', upload.none(), function(req, res) {
   var user = [];
   var userData = req.body
-  bcrypt.hash(userData.password, 0, function(err, hash) {
-    if (err) throw err;
-    user.password = hash;
-    console.log(user.password)
+  // bcrypt.hash(userData.password, 0, function(err, hash) {
+  //   if (err) throw err;
+  //   user.password = hash;
+  //   console.log(user.password)
+  // });
+  User.create(userData).then(() => {
+    console.log('User created!')
   });
-
-  var queryString = `insert into user(name, email, password, address, suite, city, state, zip, phone, card, expiry, cvv, billing_zip) 
-                values(${obj.name}, ${obj.email}, ${user.password}, ${obj.address}, ${obj.suite}, ${obj.city}, ${obj.state}, ${obj.zip}, 
-                ${obj.phone}, ${obj.card}, ${obj.expiry}, ${obj.cvv}, ${obj.billing_zip})`;
+  // var queryString = `insert into user(name, email, password) values(${userData.name}, ${userData.email}, ${userData.password})`;
   
-  connection.query(queryString, function(error, results) {
-    if(error){
-      console.log("there was an error in mysql string", error);
-    } else {
-      console.log("success you created a user", results)
-    }
-  });
+  // connection.query(queryString, function(error, results) {
+  //   if(error){
+  //     console.log("there was an error in mysql string", error);
+  //   } else {
+  //     console.log("success you created a user", results)
+  //   }
+
   res.end()
 });
