@@ -1,10 +1,6 @@
 import React, {Component} from 'react';
 
 
-
-
-//create some css styling for the box structures
-
 const boardStyles = {
   borderWidth:1,
   borderColor:'rgba(0,0,0,0.2)',
@@ -49,12 +45,6 @@ class App extends React.Component {
     );
   }
 }
-
-
-//need to build a row of seven square
-
-
-
 
 function Board(props) {
 
