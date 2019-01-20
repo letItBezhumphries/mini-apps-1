@@ -123,7 +123,7 @@ class App extends React.Component {
 
   handleFormNext(event) {
     event.preventDefault();
-    if(this.state.step === 1) {
+    if(this.state.step > 0) {
       //grab the data from the submitted
       var userData = new FormData(event.target);
       console.log(userData);

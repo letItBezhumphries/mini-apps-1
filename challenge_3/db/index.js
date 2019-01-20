@@ -70,7 +70,11 @@ User.sync()
 //   var password = bcrypt.hash(obj.password);
   
 
-
+  // bcrypt.hash(userData.password, 0, function(err, hash) {
+  //   if (err) throw err;
+  //   user.password = hash;
+  //   console.log(user.password)
+  // });
 
 // const isValidPassword = function(obj) {
 //   var passwordToCheck = bcrypt.hash(obj.password);
