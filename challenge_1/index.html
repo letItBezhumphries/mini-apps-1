@@ -1,14 +1,14 @@
 <!DOCTYPE html>
- <html lang="en">
+ <html lang="en" style="height: 100%">
    <head>
      <title>TicTacToe</title>
    </head>
    <!-- <body onLoad="init()"> -->
-   <body>
-    <h1 style="text-align: left">Ultimate Tic-Tac-Toe</h1>
-    <div class="main-container"> 
-
-      <table id="game-board" style="display: flex; border-collapse: collapse; border-spacing: 0">
+   <body style="height: 100%">
+    <h1 style="text-align: center">Ultimate Tic-Tac-Toe</h1>
+    <div class="main-container" style="height: 100%; display: flex; align-items: center; justify-content: center"> 
+      
+      <table id="game-board" style="border-collapse: collapse; border-spacing: 0">
         <tr class="top-row">
           <td class="game-box" data-row="0" data-index="0" data-column="0" data-diag="left" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
           <td class="game-box" data-row="0" data-index="1" data-column="1" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
@@ -25,19 +25,15 @@
           <td class="game-box" data-row="2" data-index="8" data-column="2" data-diag="left" onclick="handleTurnOnClick(this)" style="padding: 50px 50px; border: 1px solid"></td>
         </tr>
       </table>
-  
-      <button class="new-game" onClick="handleGameRestart(this)" >Reset</button>
+      <br/>
+      <button class="new-game" onClick="handleGameRestart(this)" style="height: 50px; width: 50px">New Game!</button>
       <!-- <input type="text" class="player-one" placeholder="player One: name">  -->
-      
-      <!-- <div class="tally-board">
-        <span>Player 1: 
-         <span>Wins: </span>
-        </span>
-        <span>Player 2:
-          <span>Wins: </span>
-        </span>
-      </div>  -->
-    
+      <br/>
+        <div class="tally-board">
+          <span>Player 1 Wins: <span class="player-one-wins"></span></span>
+          <br/>
+          <span>Player 2 Wins: <span class="player-two-wins"></span></span>
+        </div> 
     </div>
 
 

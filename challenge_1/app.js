@@ -207,3 +207,22 @@ var getDiagonalsRight = function(el, stateBoard) {
 //   } 
 // }
 
+/*
+*********************** model ************************** 
+managing of state
+*/
+
+
+/*
+************************ views ************************** 
+what the user sees 
+how state is displayed 
+*/
+
+
+
+
+/* 
+*********************** controller **********************
+user interface --forms, buttons, event listener
+*/
