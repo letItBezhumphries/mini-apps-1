@@ -30,7 +30,7 @@
     "popper.js": "^1.14.6",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
-    "sequelize": "^4.42.0"
+    "sequelize": "^5.15.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
